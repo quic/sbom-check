@@ -1,0 +1,14 @@
+beartype==0.18.5
+boolean.py==4.0
+click==8.1.7
+isodate==0.6.1
+license-expression==30.3.0
+ply==3.11
+pyparsing==3.1.2
+PyYAML==6.0.1
+rdflib==7.0.0
+semantic-version==2.10.0
+six==1.16.0
+spdx-tools==0.8.2
+uritools==4.0.3
+xmltodict==0.13.0

@@ -5,4 +5,4 @@
 
 """Package namespace exports."""
 
-from sbom_check.checks import check_sbom
+from sbom_check.checks import CheckResult, check_sbom

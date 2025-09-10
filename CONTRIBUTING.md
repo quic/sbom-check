@@ -1,3 +1,6 @@
+Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.  
+SPDX-License-Identifier: BSD-3-Clause
+
 ## Contributing to SBOM Check
 
 Hi there!
@@ -7,6 +10,71 @@ Your help is essential for keeping this project great and for making it better.
 ## Branching Strategy
 
 In general, contributors should develop on branches based off of `main` and pull requests should be made against `main`.
+
+## Development Environment Setup
+
+### Initial Setup
+
+```bash
+# Install with development dependencies (default behavior)
+uv sync
+
+# Install production dependencies only (if needed)
+uv sync --no-dev
+```
+
+### Available Tox Environments
+
+- **Quality Assurance**: `ruff-format`, `ruff-check`, `ruff-fix`, `mypy`, `pylint`
+- **Testing**: `py310`, `py311`, `py312`, `py313`, `test-unit`, `test-integration`, `test-parallel`
+- **Utilities**: `clean`, `dev`
+
+### Quick Development Workflow
+
+```bash
+# Format and fix code issues
+uv run tox -e ruff-format,ruff-fix
+
+# Run all quality checks
+uv run tox -e ruff-check,mypy,pylint -p auto
+
+# Run tests with coverage
+uv run tox -e py310
+
+# Run complete quality pipeline (format + lint + test all Python versions)
+uv run tox
+
+# Run quality pipeline in parallel (faster)
+uv run tox -p auto
+
+# Clean up generated files
+uv run tox -e clean
+```
+
+### Project Structure
+
+```
+sbom-check/
+├── src/
+│   ├── sbom_check/          # Main SBOM-Check package
+│   │   ├── cli.py          # SBOM-Check CLI
+│   │   ├── engine.py       # Validation engine with profiles
+│   │   ├── models.py       # SBOM-Check data models
+│   │   └── config/         # Configuration system
+│   └── spdx_validator/     # Integrated SPDX validator library
+│       ├── cli.py          # SPDX-Validate CLI
+│       ├── engine.py       # Core SPDX validation engine
+│       ├── models.py       # SPDX data models
+│       └── validators.py   # JSON Schema & OWL validators
+├── data/                   # Shared schema and ontology files
+│   ├── spdx-2.3-spec.json
+│   └── spdx-2.3-ontology.owl
+├── tests/                  # Test suite
+│   ├── unit/sbom_check/    # SBOM-Check tests
+│   └── unit/spdx_validator/ # SPDX-Validator tests
+├── pyproject.toml          # Project configuration
+└── Makefile               # Development workflow
+```
 
 ## Submitting a pull request
 
@@ -29,16 +97,7 @@ In general, contributors should develop on branches based off of `main` and pull
     git remote add upstream https://github.com/quic/sbom-check.git
     ```
 
-1. Make your changes, add tests, and make sure the tests, code quality, typing annotation, and style checks still pass.
-  1. Run `tox -e autoformat` to run the `black` autoformatter and `isort` on the code.
-  1. Run `tox` to run the CI checks locally.
-  1. You can also run the various check individually via `tox`:
-    1. `tox -e black` (code format)
-    1. `tox -e isort` (imports format)
-    1. `tox -e flake8` (code complexity/style)
-    1. `tox -e mypy` (type annotation)
-    1. `tox -e pylint` (code quality)
-    1. `tox -e py310` (unit tests)
+1. Make your changes, add tests, and make sure the tests, code quality, typing annotation, and style checks still pass. See the [Quick Development Workflow](#quick-development-workflow) section above for detailed commands.
 
 1. Commit your changes using the [DCO](http://developercertificate.org/). You can attest to the DCO by commiting with the **-s** or **--signoff** options or manually adding the "Signed-off-by":
 

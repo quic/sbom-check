@@ -1,0 +1,286 @@
+[build-system]
+requires = ["setuptools>=61.0", "setuptools-scm>=8.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sbom-check"
+dynamic = ["version"]
+description = "SPDX 2.3 SBOM validator with configurable additional requirements for completeness validation"
+readme = "README.md"
+license = {text = "BSD-3-Clause"}
+authors = [
+    {name = "SBOM Check Contributors"}
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: System :: Software Distribution",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "click>=8.2.1",
+    "pydantic>=2.11.7",
+    "pyyaml>=6.0.2",
+    "rich>=13.0.0",
+    "jinja2>=3.1.0",
+    # spdx-validator dependencies
+    "jsonschema>=4.25.1",
+]
+
+[project.scripts]
+sbom-check = "sbom_check.cli:main"
+spdx-validate = "spdx_validator.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.1",
+    "pytest-cov>=6.2.1",
+    "pytest-mock>=3.12.0",
+    "pytest-xdist>=3.5.0",
+    "pylint>=3.3.8",
+    "mypy>=1.17.1",
+    "ruff>=0.12.10",
+    "types-pyyaml>=6.0.12",
+    "types-click>=7.1.8",
+    "types-jinja2>=2.11.9",
+    "types-jsonschema>=4.25.1",
+    "tox>=4.0.0",
+    "tox-uv>=1.11.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.setuptools_scm]
+version_scheme = "guess-next-dev"
+local_scheme = "dirty-tag"
+write_to = "src/sbom_check/_version.py"
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+exclude = [
+    "src/sbom_check/_version.py",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+    "ARG", # flake8-unused-arguments
+    "SIM", # flake8-simplify
+    "TCH", # flake8-type-checking
+    "PTH", # flake8-use-pathlib
+    "ERA", # eradicate
+    "PL",  # pylint
+    "RUF", # ruff-specific rules
+]
+ignore = [
+    "E501",   # line too long, handled by formatter
+    "PLR0913", # too many arguments
+    "PLR0912", # too many branches
+    "PLR0915", # too many statements
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["ARG", "S101", "PLR2004"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["sbom_check", "spdx_validator"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+show_error_codes = true
+
+[[tool.mypy.overrides]]
+module = [
+    "sbom_check._version",
+]
+ignore_missing_imports = true
+
+[tool.pylint.main]
+py-version = "3.10"
+jobs = 0
+ignore-paths = [
+    "src/sbom_check/_version.py",
+]
+load-plugins = [
+    "pylint.extensions.check_elif",
+    "pylint.extensions.bad_builtin",
+    "pylint.extensions.docparams",
+    "pylint.extensions.for_any_all",
+    "pylint.extensions.set_membership",
+    "pylint.extensions.code_style",
+    "pylint.extensions.overlapping_exceptions",
+    "pylint.extensions.typing",
+    "pylint.extensions.redefined_variable_type",
+    "pylint.extensions.comparison_placement",
+]
+
+[tool.pylint.messages_control]
+disable = [
+    "missing-class-docstring",
+    "missing-function-docstring",
+    "line-too-long",  # handled by ruff
+    "too-few-public-methods",
+    "too-many-arguments",
+    "too-many-instance-attributes",
+    "duplicate-code",
+]
+
+[tool.pylint.format]
+max-line-length = 88
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --strict-markers --strict-config"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+]
+
+[tool.coverage.run]
+source = ["src"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "src/sbom_check/_version.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+
+[tool.tox]
+min_version = "4.0"
+env_list = ["ruff-check", "mypy", "pylint", "py310", "py311", "py312", "py313"]
+runner = "uv-venv-lock-runner"
+parallel_show_output = true
+
+# Python version test environments
+[tool.tox.env."py{310,311,312,313}"]
+description = "Run tests with Python {env_name}"
+groups = ["dev"]
+commands = [
+    ["pytest", "tests/", "-v", "--cov=src", "--cov-report=html", "--cov-report=term"]
+]
+
+# Ruff formatting
+[tool.tox.env.ruff-format]
+description = "Format code with ruff"
+commands = [
+    ["ruff", "format", "src", "tests"]
+]
+
+# Ruff linting (check only)
+[tool.tox.env.ruff-check]
+description = "Check code with ruff"
+commands = [
+    ["ruff", "check", "src", "tests"]
+]
+
+# Ruff linting (with fixes)
+[tool.tox.env.ruff-fix]
+description = "Fix code issues with ruff"
+commands = [
+    ["ruff", "check", "--fix", "src", "tests"]
+]
+
+# Type checking
+[tool.tox.env.mypy]
+description = "Type checking with mypy"
+commands = [
+    ["mypy", "src"]
+]
+
+# Pylint linting
+[tool.tox.env.pylint]
+description = "Linting with pylint"
+commands = [
+    ["pylint", "src"]
+]
+
+# Unit tests only
+[tool.tox.env.test-unit]
+description = "Run unit tests only"
+groups = ["dev"]
+commands = [
+    ["pytest", "tests/unit/", "-v", "-m", "not slow"]
+]
+
+# Integration tests only
+[tool.tox.env.test-integration]
+description = "Run integration tests only"
+groups = ["dev"]
+commands = [
+    ["pytest", "tests/integration/", "-v"]
+]
+
+# Parallel test execution
+[tool.tox.env.test-parallel]
+description = "Run tests in parallel"
+groups = ["dev"]
+commands = [
+    ["pytest", "tests/", "-v", "--cov=src", "-n", "auto"]
+]
+
+# Clean up generated files
+[tool.tox.env.clean]
+description = "Clean up generated files"
+skip_install = true
+deps = []
+allowlist_externals = ["rm", "find"]
+commands = [
+    ["rm", "-rf", ".coverage", "htmlcov/", ".pytest_cache/", ".mypy_cache/", ".ruff_cache/", ".tox/"],
+    ["find", ".", "-type", "f", "-name", "*.pyc", "-delete"],
+    ["find", ".", "-type", "d", "-name", "__pycache__", "-exec", "rm", "-rf", "{}", "+"],
+    ["rm", "-rf", "src/sbom_check.egg-info/", "src/spdx_validator.egg-info/"]
+]
+
+# Development environment setup
+[tool.tox.env.dev]
+description = "Set up development environment"
+commands = [
+    ["python", "-c", "print('Development environment ready!')"]
+]

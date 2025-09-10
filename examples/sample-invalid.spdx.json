@@ -1,0 +1,29 @@
+{
+  "spdxVersion": "SPDX-2.2",
+  "dataLicense": "MIT",
+  "SPDXID": "SPDXRef-DOC",
+  "name": "MyProduct",
+  "documentNamespace": "http://example.com/spdx/test#fragment",
+  "creationInfo": {
+    "creators": [
+      "Organization: Example Corp"
+    ],
+    "created": "2024-08-24 18:30:22",
+    "licenseListVersion": "3.26"
+  },
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-Package-MyApp",
+      "name": "MyApplication",
+      "versionInfo": "1.0.0",
+      "supplier": "Organization: Example Corp",
+      "downloadLocation": "NONE",
+      "filesAnalyzed": false,
+      "homepage": "https://example.com/myapp",
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "copyrightText": "Copyright (c) 2024 Example Corp"
+    }
+  ],
+  "relationships": []
+}

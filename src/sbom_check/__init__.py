@@ -1,8 +1,20 @@
-# Copyright (c) 2024, Qualcomm Innovation Center, Inc. All rights reserved.
+# Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
 # SPDX-License-Identifier: BSD-3-Clause
 
-# flake8: noqa F401
+"""SBOM-Check: SPDX 2.3 SBOM validator with configurable additional requirements."""
 
-"""Package namespace exports."""
+__version__ = "0.1.0"
+__author__ = "SBOM Check Contributors"
+__license__ = "BSD-3-Clause"
 
-from sbom_check.checks import CheckResult, check_sbom
+from sbom_check.models import (
+    SbomCheckResult,
+    ValidationMessage,
+    ValidationSeverity,
+)
+
+__all__ = [
+    "SbomCheckResult",
+    "ValidationMessage",
+    "ValidationSeverity",
+]

@@ -1,0 +1,96 @@
+{
+  "spdxVersion": "SPDX-2.3",
+  "dataLicense": "CC0-1.0",
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "name": "MyProduct-v1.0.0-SBOM",
+  "documentNamespace": "https://example.com/spdx/myproduct-v1.0.0-20240824-12345678",
+  "creationInfo": {
+    "creators": [
+      "Organization: Example Corp",
+      "Tool: SPDX-Tools-2.3.0"
+    ],
+    "created": "2024-08-24T18:30:22Z",
+    "licenseListVersion": "3.26"
+  },
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-Package-MyApp",
+      "name": "MyApplication",
+      "versionInfo": "1.0.0",
+      "supplier": "Organization: Example Corp",
+      "downloadLocation": "NONE",
+      "filesAnalyzed": false,
+      "homepage": "https://example.com/myapp",
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "copyrightText": "Copyright (c) 2024 Example Corp",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:generic/myapplication@1.0.0"
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-Package-GCC",
+      "name": "GCC",
+      "versionInfo": "11.4.0",
+      "supplier": "Organization: Free Software Foundation",
+      "downloadLocation": "https://gcc.gnu.org/releases.html",
+      "filesAnalyzed": false,
+      "homepage": "https://gcc.gnu.org/",
+      "licenseConcluded": "GPL-3.0-or-later",
+      "licenseDeclared": "GPL-3.0-or-later",
+      "copyrightText": "Copyright (c) Free Software Foundation",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:generic/gcc@11.4.0"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:gnu:gcc:11.4.0:*:*:*:*:*:*:*"
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-Package-OpenSSL",
+      "name": "openssl",
+      "versionInfo": "1.1.1k",
+      "supplier": "Organization: OpenSSL Software Foundation",
+      "downloadLocation": "https://www.openssl.org/source/openssl-1.1.1k.tar.gz",
+      "filesAnalyzed": false,
+      "homepage": "https://www.openssl.org/",
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "copyrightText": "Copyright (c) 1998-2021 The OpenSSL Project",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:generic/openssl@1.1.1k"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:openssl:openssl:1.1.1k:*:*:*:*:*:*:*"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "spdxElementId": "SPDXRef-DOCUMENT",
+      "relationshipType": "DESCRIBES",
+      "relatedSpdxElement": "SPDXRef-Package-MyApp"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-MyApp",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-OpenSSL"
+    }
+  ]
+}

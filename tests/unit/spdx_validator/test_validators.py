@@ -344,11 +344,9 @@ class TestJsonSchemaValidator:
 class TestSemanticValidator:
     """Test cases for SemanticValidator."""
 
-    def test_init_with_custom_ontology_path(self) -> None:
-        """Test validator initialization with custom ontology path (ignored)."""
-        custom_path = Path("/custom/ontology.owl")
-        validator = SemanticValidator(custom_path)
-        # The optimized validator doesn't use ontology files, but accepts the parameter
+    def test_init(self) -> None:
+        """Test validator initialization."""
+        validator = SemanticValidator()
         assert validator is not None
 
     def test_init_with_default_ontology_path(self) -> None:
